@@ -26,7 +26,7 @@ def windows_event(s):
         f"<Provider Name='{s['provider']}'/><EventID>{s['event_id']}</EventID>"
         f"<Level>{s.get('level', 4)}</Level><Keywords>{s.get('keywords', '0x8000000000000000')}</Keywords>"
         "<TimeCreated SystemTime='2026-11-23T10:00:00.000Z'/>"
-        f"<Channel>{s['channel']}</Channel><Computer>LAB-WIN</Computer>"
+        f"<Channel>{s['channel']}</Channel><Computer>WIN-HOST</Computer>"
         f"</System><EventData>{data}</EventData></Event>"
     )
     return "f:EventChannel:" + json.dumps({"Message": "", "Event": xml})
