@@ -1,0 +1,29 @@
+title: LSASS Memory Access for Credential Dumping
+id: 0dff0705-ecad-4b7c-96b8-bed66893bc1d
+status: experimental
+description: Detects a process opening lsass.exe with access rights used by credential dumpers such as Mimikatz and procdump.
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.credential-access
+    - attack.t1003.001
+logsource:
+    product: windows
+    category: process_access
+detection:
+    selection:
+        TargetImage|endswith: '\lsass.exe'
+        GrantedAccess:
+            - '0x1010'
+            - '0x1410'
+            - '0x1438'
+            - '0x143a'
+            - '0x1fffff'
+    filter_system:
+        SourceImage|startswith:
+            - 'C:\Windows\System32\'
+            - 'C:\Program Files\Windows Defender\'
+    condition: selection and not filter_system
+falsepositives:
+    - EDR and antivirus products
+level: critical

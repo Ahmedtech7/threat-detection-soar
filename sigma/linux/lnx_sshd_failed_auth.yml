@@ -1,0 +1,20 @@
+title: SSH Failed Authentication (Brute Force Input)
+id: 4f34a649-c5ba-483e-acf3-f9151b869e7a
+status: experimental
+description: Detects failed SSH logins. The Wazuh rule built from it alerts when one source IP fails 8 times in a short window.
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.credential-access
+    - attack.t1110.001
+logsource:
+    product: linux
+    service: sshd
+detection:
+    keywords:
+        - 'Failed password for'
+        - 'Invalid user'
+    condition: keywords
+falsepositives:
+    - Users mistyping passwords (the Wazuh rule needs repeated failures)
+level: medium

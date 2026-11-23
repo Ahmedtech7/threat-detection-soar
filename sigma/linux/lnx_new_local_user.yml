@@ -1,0 +1,19 @@
+title: New Local User Account Created
+id: 73bdee98-03f6-421e-9d59-1b5c2420877f
+status: experimental
+description: Detects useradd creating a new local account, which attackers use to keep access to a host.
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.persistence
+    - attack.t1136.001
+logsource:
+    product: linux
+    service: auth
+detection:
+    keywords:
+        - 'new user: name='
+    condition: keywords
+falsepositives:
+    - Planned user provisioning
+level: medium

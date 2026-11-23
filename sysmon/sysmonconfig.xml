@@ -1,0 +1,31 @@
+<!--
+  Minimal Sysmon config: logs only the events the rules in /sigma need.
+  Install (admin PowerShell):  sysmon64.exe -accepteula -i sysmonconfig.xml
+  Update:                       sysmon64.exe -c sysmonconfig.xml
+-->
+<Sysmon schemaversion="4.90">
+  <HashAlgorithms>sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    <!-- Event 1: process creation (encoded PowerShell, schtasks, certutil) -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="exclude">
+        <Image condition="is">C:\Windows\System32\conhost.exe</Image>
+      </ProcessCreate>
+    </RuleGroup>
+    <!-- Event 3: network connections from tools attackers abuse -->
+    <RuleGroup name="" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <Image condition="end with">\powershell.exe</Image>
+        <Image condition="end with">\pwsh.exe</Image>
+        <Image condition="end with">\certutil.exe</Image>
+      </NetworkConnect>
+    </RuleGroup>
+    <!-- Event 10: handles opened to LSASS (credential dumping) -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessAccess onmatch="include">
+        <TargetImage condition="end with">\lsass.exe</TargetImage>
+      </ProcessAccess>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

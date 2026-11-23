@@ -1,0 +1,11 @@
+{
+  "abuseipdb_key": "YOUR_ABUSEIPDB_KEY",
+  "virustotal_key": "YOUR_VIRUSTOTAL_KEY",
+  "abuse_threshold": 75,
+  "vt_threshold": 3,
+  "wazuh_api_url": "https://127.0.0.1:55000",
+  "wazuh_api_user": "wazuh-wui",
+  "wazuh_api_password": "CHANGE_ME",
+  "verify_tls": false,
+  "log_file": "/var/ossec/logs/soar.json"
+}

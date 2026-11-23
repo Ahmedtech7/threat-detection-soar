@@ -1,0 +1,23 @@
+title: Certutil Used to Download a File
+id: 3515957f-69c3-40f9-b695-fdb9cdf5099b
+status: experimental
+description: Detects certutil.exe used with -urlcache or -verifyctl to download a payload (living off the land).
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_img:
+        Image|endswith: '\certutil.exe'
+    selection_cli:
+        CommandLine|contains:
+            - '-urlcache'
+            - '-verifyctl'
+    condition: all of selection_*
+falsepositives:
+    - Rare; certutil is seldom used to fetch URLs legitimately
+level: high

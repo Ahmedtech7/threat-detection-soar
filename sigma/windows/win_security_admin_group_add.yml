@@ -1,0 +1,21 @@
+title: User Added to Local Administrators Group
+id: ca5e9141-e5e4-483b-8695-ffb745042c81
+status: experimental
+description: Detects an account being added to the built-in local Administrators group, a common persistence and privilege escalation step.
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1098
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4732
+        TargetSid: 'S-1-5-32-544'
+    condition: selection
+falsepositives:
+    - Planned administration by IT staff
+level: high

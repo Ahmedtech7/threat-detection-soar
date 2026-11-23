@@ -1,0 +1,96 @@
+<!--
+  Custom detection rules, each translated by hand from a Sigma rule in /sigma.
+  The <info>sigma:<id></info> tag links a Wazuh rule to its Sigma source;
+  tests/test_rules.py checks that every Sigma rule has one and that the
+  MITRE ATT&CK IDs match.
+  Install: copy to /var/ossec/etc/rules/local_rules.xml on the manager.
+  Check:   /var/ossec/bin/wazuh-logtest
+-->
+<group name="local,attack,windows_custom,">
+
+  <rule id="100100" level="12">
+    <if_group>sysmon</if_group>
+    <field name="win.system.eventID">^1$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\(powershell|pwsh)\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\s-(e|en|enc|enco|encodedcommand)\s</field>
+    <description>PowerShell encoded command executed on $(win.system.computer)</description>
+    <info type="text">sigma:63f86971-918d-43ae-80d0-b488d75f10f3</info>
+    <mitre>
+      <id>T1059.001</id>
+      <id>T1027</id>
+    </mitre>
+  </rule>
+
+  <rule id="100101" level="14">
+    <if_group>sysmon</if_group>
+    <field name="win.system.eventID">^10$</field>
+    <field name="win.eventdata.targetImage" type="pcre2">(?i)\\lsass\.exe$</field>
+    <field name="win.eventdata.grantedAccess" type="pcre2">(?i)^0x(1010|1410|1438|143a|1fffff)$</field>
+    <field name="win.eventdata.sourceImage" type="pcre2" negate="yes">(?i)^C:\\+(Windows\\+System32|Program Files\\+Windows Defender)\\+</field>
+    <description>Possible credential dumping: $(win.eventdata.sourceImage) accessed LSASS memory</description>
+    <info type="text">sigma:0dff0705-ecad-4b7c-96b8-bed66893bc1d</info>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100102" level="12">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^4732$</field>
+    <field name="win.eventdata.targetSid">^S-1-5-32-544$</field>
+    <description>User $(win.eventdata.memberSid) added to local Administrators on $(win.system.computer)</description>
+    <info type="text">sigma:ca5e9141-e5e4-483b-8695-ffb745042c81</info>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+  </rule>
+
+  <rule id="100103" level="8">
+    <if_group>sysmon</if_group>
+    <field name="win.system.eventID">^1$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\schtasks\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)/create</field>
+    <description>Scheduled task created via schtasks on $(win.system.computer)</description>
+    <info type="text">sigma:b84973f4-4201-44b9-b1fd-0b6360a63321</info>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+
+  <rule id="100104" level="12">
+    <if_group>sysmon</if_group>
+    <field name="win.system.eventID">^1$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\certutil\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)-(urlcache|verifyctl)</field>
+    <description>Certutil used to download a file on $(win.system.computer)</description>
+    <info type="text">sigma:3515957f-69c3-40f9-b695-fdb9cdf5099b</info>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+
+</group>
+
+<group name="local,attack,linux_custom,">
+
+  <!-- Builds on Wazuh's own SSH brute force rules (8 failures from one IP in a short window) -->
+  <rule id="100106" level="12">
+    <if_sid>5712, 5720</if_sid>
+    <description>SSH brute force from $(srcip)</description>
+    <info type="text">sigma:4f34a649-c5ba-483e-acf3-f9151b869e7a</info>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+    <group>soar_block,</group>
+  </rule>
+
+  <rule id="100107" level="10">
+    <if_sid>5902</if_sid>
+    <description>New local user created on $(hostname)</description>
+    <info type="text">sigma:73bdee98-03f6-421e-9d59-1b5c2420877f</info>
+    <mitre>
+      <id>T1136.001</id>
+    </mitre>
+  </rule>
+
+</group>

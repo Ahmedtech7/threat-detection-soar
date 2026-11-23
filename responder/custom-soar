@@ -1,0 +1,4 @@
+#!/bin/sh
+# Launcher Wazuh calls; runs custom_soar.py with Wazuh's bundled Python.
+DIR=$(cd "$(dirname "$0")" && pwd)
+exec "$DIR/../framework/python/bin/python3" "$DIR/custom_soar.py" "$@"

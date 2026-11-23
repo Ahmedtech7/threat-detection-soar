@@ -1,0 +1,19 @@
+[
+  {"expect": "100100", "type": "windows", "provider": "Microsoft-Windows-Sysmon", "channel": "Microsoft-Windows-Sysmon/Operational", "event_id": 1,
+   "data": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell.exe -NoProfile -enc dwBoAG8AYQBtAGkA"}},
+  {"expect": "100103", "type": "windows", "provider": "Microsoft-Windows-Sysmon", "channel": "Microsoft-Windows-Sysmon/Operational", "event_id": 1,
+   "data": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks /create /tn SoarTest /tr \"cmd.exe /c echo test\" /sc once /st 23:59 /f"}},
+  {"expect": "100104", "type": "windows", "provider": "Microsoft-Windows-Sysmon", "channel": "Microsoft-Windows-Sysmon/Operational", "event_id": 1,
+   "data": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil.exe -urlcache -split -f https://example.com C:\\Temp\\a.html"}},
+  {"expect": "100101", "type": "windows", "provider": "Microsoft-Windows-Sysmon", "channel": "Microsoft-Windows-Sysmon/Operational", "event_id": 10,
+   "data": {"SourceImage": "C:\\Users\\analyst\\Downloads\\procdump64.exe", "TargetImage": "C:\\Windows\\system32\\lsass.exe", "GrantedAccess": "0x1fffff"}},
+  {"expect": null, "type": "windows", "provider": "Microsoft-Windows-Sysmon", "channel": "Microsoft-Windows-Sysmon/Operational", "event_id": 10,
+   "note": "Defender reading LSASS must NOT alert (filter_system)",
+   "data": {"SourceImage": "C:\\Program Files\\Windows Defender\\MsMpEng.exe", "TargetImage": "C:\\Windows\\system32\\lsass.exe", "GrantedAccess": "0x1410"}},
+  {"expect": "100102", "type": "windows", "provider": "Microsoft-Windows-Security-Auditing", "channel": "Security", "event_id": 4732, "level": 0, "keywords": "0x8020000000000000",
+   "data": {"MemberSid": "S-1-5-21-1-2-3-1001", "TargetUserName": "Administrators", "TargetDomainName": "Builtin", "TargetSid": "S-1-5-32-544", "SubjectUserName": "analyst"}},
+  {"expect": "100106", "type": "syslog", "location": "/var/log/auth.log", "repeat": 8,
+   "line": "Nov 23 12:00:01 lab-linux sshd[1234]: Failed password for invalid user admin from 45.33.32.156 port 4242 ssh2"},
+  {"expect": "100107", "type": "syslog", "location": "/var/log/auth.log",
+   "line": "Nov 23 12:05:00 lab-linux useradd[2222]: new user: name=soar_test, UID=1001, GID=1001, home=/home/soar_test, shell=/bin/sh, from=/dev/pts/0"}
+]

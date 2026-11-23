@@ -1,0 +1,21 @@
+title: Scheduled Task Created from Command Line
+id: b84973f4-4201-44b9-b1fd-0b6360a63321
+status: experimental
+description: Detects schtasks.exe creating a new scheduled task, used by attackers to persist on a host.
+author: threat-detection-soar
+date: 2026-11-23
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1053.005
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains: '/create'
+    condition: selection
+falsepositives:
+    - Software installers and admin scripts
+level: medium
