@@ -1,6 +1,6 @@
 # Threat Detection & Automated Response Platform
 
-A small SIEM + SOAR lab built on **Wazuh** and **Sysmon**. It detects attacks on Windows and Linux endpoints with custom rules written in **Sigma** and mapped to **MITRE ATT&CK**. It enriches alerts with threat intelligence from **AbuseIPDB** and **VirusTotal**, and it blocks malicious IPs automatically.
+A SIEM + SOAR project built on **Wazuh** and **Sysmon**. It detects attacks on Windows and Linux endpoints with custom rules written in **Sigma** and mapped to **MITRE ATT&CK**. It enriches alerts with threat intelligence from **AbuseIPDB** and **VirusTotal**, and it blocks malicious IPs automatically.
 
 ```
  Windows endpoint                Linux endpoint
@@ -71,7 +71,7 @@ PASS  expected 100107  got ['100107']
 8/8 passed
 ```
 
-## Lab setup
+## Setup
 
 1. **Wazuh manager:** use the official [wazuh-docker](https://github.com/wazuh/wazuh-docker) single-node deployment, or the Wazuh OVA.
 2. **Rules and responder:** copy this repo to the manager and run `sh deploy/install-manager.sh`. Then:
@@ -82,7 +82,7 @@ PASS  expected 100107  got ['100107']
    - install [Sysmon](https://learn.microsoft.com/sysinternals/downloads/sysmon) with `sysmon64.exe -accepteula -i sysmon/sysmonconfig.xml`;
    - install the Wazuh agent and add `wazuh/agent-windows.conf` to its config.
 4. **Linux VM:** install the Wazuh agent and add `wazuh/agent-linux.conf` to its config.
-5. **Simulate attacks** (lab machines only):
+5. **Simulate attacks** (test machines you own only):
    - Windows, as Administrator: `simulate/windows_tests.ps1`
    - Linux, from a second machine: `sh simulate/linux_ssh_bruteforce.sh <target-ip>`
    - Linux, as root on the target: `sh simulate/linux_new_user.sh`
@@ -102,5 +102,5 @@ deploy/       Install script for the manager
 ## Security notes
 
 - `soar.json` holds API keys. The install script sets it to `640 root:wazuh`, and it is git-ignored.
-- `verify_tls: false` is only for a lab with Wazuh's self-signed certificate. Use a trusted certificate and set it to `true` anywhere else.
+- `verify_tls: false` is only for testing with Wazuh's self-signed certificate. Use a trusted certificate and set it to `true` anywhere else.
 - Run the simulation scripts only on machines you own.
