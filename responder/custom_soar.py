@@ -122,7 +122,8 @@ def block_ip(ip, agent_id, cfg):
         method="POST",
         verify=verify,
     )["data"]["token"]
-    payload = {"command": "firewall-drop", "alert": {"data": {"srcip": ip}}}
+    # "!" runs the agent's built-in firewall-drop script directly, with no extra <command> config.
+    payload = {"command": "!firewall-drop", "alert": {"data": {"srcip": ip}}}
     result = http_json(
         f"{api}/active-response?agents_list={agent_id}",
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},

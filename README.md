@@ -55,6 +55,8 @@ pytest -v
 
 **Engine test** starts a real Wazuh 4.12 manager in Docker, loads the rules and sends sample events into its analysis queue, in the same format the Windows and Linux agents use. It then checks that each expected rule fires. It also checks one negative case: Windows Defender reading LSASS must not alert.
 
+**Blocking test:** the responder's `block_ip` was run against a real Wazuh 4.12 manager with an enrolled Ubuntu agent. The agent then added `-A INPUT -s 45.33.32.156/32 -j DROP` to its iptables rules.
+
 ```bash
 sh tests/run_engine_test.sh
 ```

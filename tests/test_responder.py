@@ -117,7 +117,7 @@ def test_block_ip_calls_wazuh_api(monkeypatch):
     assert (m1, u1) == ("POST", "https://wazuh:55000/security/user/authenticate")
     assert (m2, u2) == ("PUT", "https://wazuh:55000/active-response?agents_list=003")
     assert h2["Authorization"] == "Bearer T"
-    assert json.loads(d2) == {"command": "firewall-drop", "alert": {"data": {"srcip": "45.33.32.156"}}}
+    assert json.loads(d2) == {"command": "!firewall-drop", "alert": {"data": {"srcip": "45.33.32.156"}}}
 
 
 def test_main_writes_one_log_line(tmp_path, monkeypatch):
